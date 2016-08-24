@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="Modelo Dimensional" id="75F1F3AC-0CB2-84D8-3590-68607AEA59C0" version="3.5">
+<createdBy>rm74295</createdBy>
+<createdTime>2016-05-03 13:13:42 UTC</createdTime>
+<ownerDesignName>Modelo Dimensional</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>75F1F3AC-0CB2-84D8-3590-68607AEA59C0</designId>
+</OSDM_Design>
