@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="MER" id="23DCE9D8-EC66-7DD3-192B-07FAED1D1D7A" version="3.5">
+<createdBy>fmore</createdBy>
+<createdTime>2015-10-02 14:09:48 UTC</createdTime>
+<generatorID>Gerado pelo usuário</generatorID>
+<ownerDesignName>AM_1TBDA_V$DATABEER</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>23DCE9D8-EC66-7DD3-192B-07FAED1D1D7A</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="A96960DB-A87E-4DB3-83DB-E2BA9D05CF42">
+<designStoragePath>C:\Users\fmore\Desktop\AM_1TBDA_V$DATABEER</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
+</OSDM_Design>

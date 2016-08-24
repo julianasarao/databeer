@@ -1,0 +1,389 @@
+-- Gerado por Oracle SQL Developer Data Modeler 4.0.3.853
+--   em:        2016-05-19 15:42:55 BRT
+--   site:      Oracle Database 11g
+--   tipo:      Oracle Database 11g
+
+
+
+
+CREATE TABLE BAIRRO
+  (
+    cd_bairro INTEGER NOT NULL ,
+    nm_bairro VARCHAR2 (30 CHAR) NOT NULL ,
+    cd_cidade INTEGER NOT NULL
+  ) ;
+ALTER TABLE BAIRRO ADD CONSTRAINT BAIRRO_PK PRIMARY KEY ( cd_bairro ) ;
+
+CREATE TABLE CARGO
+  (
+    cg_crg INTEGER NOT NULL ,
+    nm_crg VARCHAR2 (30 CHAR) NOT NULL
+  ) ;
+ALTER TABLE CARGO ADD CONSTRAINT CARGO_PK PRIMARY KEY ( cg_crg ) ;
+
+CREATE TABLE CATEGORIA
+  (
+    cd_categoria NUMBER (10) NOT NULL ,
+    nm_categoria VARCHAR2 (100)
+  ) ;
+ALTER TABLE CATEGORIA ADD CONSTRAINT CATEGORIA_PK PRIMARY KEY ( cd_categoria ) ;
+
+CREATE TABLE CERVEJA
+  (
+    cd_produto        INTEGER NOT NULL ,
+    ds_amargor_cerv   VARCHAR2 (5 CHAR) NOT NULL ,
+    pe_alcool_cerv    NUMBER (2,4) NOT NULL ,
+    cd_estilo_cerveja INTEGER NOT NULL ,
+    cd_pais           INTEGER NOT NULL ,
+    ml_cerveja        NUMBER (4) NOT NULL
+  ) ;
+ALTER TABLE CERVEJA ADD CHECK ( ds_amargor_cerv IN ('alto', 'baixo', 'medio')) ;
+ALTER TABLE CERVEJA ADD CONSTRAINT CERVEJA_PK PRIMARY KEY ( cd_produto ) ;
+
+CREATE TABLE CIDADE
+  (
+    cd_cidade INTEGER NOT NULL ,
+    nm_cidade VARCHAR2 (30 CHAR) NOT NULL ,
+    sg_estado CHAR (2) NOT NULL
+  ) ;
+ALTER TABLE CIDADE ADD CONSTRAINT CIDADE_PK PRIMARY KEY ( cd_cidade ) ;
+
+CREATE TABLE CLIENTE
+  (
+    cd_cliente           INTEGER NOT NULL ,
+    dt_cadastro_cliente  DATE NOT NULL ,
+    ds_profissao_cliente VARCHAR2 (30 CHAR) NOT NULL ,
+    tp_trasporte_cliente VARCHAR2 (7 CHAR) ,
+    cd_pessoa            INTEGER NOT NULL
+  ) ;
+ALTER TABLE CLIENTE ADD CHECK ( tp_trasporte_cliente IN ('particular', 'privado', 'publico')) ;
+CREATE UNIQUE INDEX CLIENTE__IDX ON CLIENTE ( cd_pessoa ASC ) ;
+  ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_PK PRIMARY KEY ( cd_cliente ) ;
+
+CREATE TABLE CLIMA
+  (
+    dt_clima DATE NOT NULL ,
+    tp_clima VARCHAR2 (7 CHAR) NOT NULL ,
+    tm_clima VARCHAR2 (5 CHAR) NOT NULL
+  ) ;
+ALTER TABLE CLIMA ADD CHECK ( tp_clima IN ('aberto', 'chuvoso', 'nublado')) ;
+ALTER TABLE CLIMA ADD CONSTRAINT CLIMA_PK PRIMARY KEY ( dt_clima ) ;
+
+CREATE TABLE COMBO_PRD_IVND
+  (
+    cd_produto    INTEGER NOT NULL ,
+    cd_item_venda INTEGER NOT NULL ,
+    cd_venda      INTEGER NOT NULL
+  ) ;
+ALTER TABLE COMBO_PRD_IVND ADD CONSTRAINT FK__PRD_IVND_PK PRIMARY KEY ( cd_produto, cd_item_venda, cd_venda ) ;
+
+CREATE TABLE COMBO_PROD_ITM_VND
+  (
+    cd_produto    INTEGER NOT NULL ,
+    cd_item_promo INTEGER NOT NULL
+  ) ;
+ALTER TABLE COMBO_PROD_ITM_VND ADD CONSTRAINT FK_PROD_ITM_VND_PK PRIMARY KEY ( cd_produto, cd_item_promo ) ;
+
+CREATE TABLE COMBO_VND_PRM
+  (
+    cd_promo INTEGER NOT NULL ,
+    cd_venda INTEGER NOT NULL
+  ) ;
+ALTER TABLE COMBO_VND_PRM ADD CONSTRAINT FK_VND_PRM_PK PRIMARY KEY ( cd_promo, cd_venda ) ;
+
+CREATE TABLE CUPOM
+  (
+    nu_cupom      INTEGER NOT NULL ,
+    vl_desc_cupom NUMBER (2,5) NOT NULL ,
+    tp_cupom      VARCHAR2 (12) NOT NULL ,
+    cd_promo      INTEGER NOT NULL
+  ) ;
+ALTER TABLE CUPOM ADD CHECK ( tp_cupom IN ('reutilizavel', 'unico')) ;
+ALTER TABLE CUPOM ADD CONSTRAINT CUPOM_PK PRIMARY KEY ( nu_cupom ) ;
+
+CREATE TABLE ENDERECO
+  (
+    cd_end           INTEGER NOT NULL ,
+    logradouro_end   VARCHAR2 (8 CHAR) NOT NULL ,
+    nm_end           VARCHAR2 (50 CHAR) NOT NULL ,
+    nu_end           NUMBER (5) NOT NULL ,
+    nu_cep_end       VARCHAR2 (14 CHAR) NOT NULL ,
+    ds_ponto_ref_end VARCHAR2 (100 CHAR) ,
+    ds_compl_end     VARCHAR2 (30) ,
+    cd_bairro        INTEGER NOT NULL ,
+    cd_pessoa        INTEGER
+  ) ;
+ALTER TABLE ENDERECO ADD CHECK ( logradouro_end IN ('alameda', 'avenida', 'beco', 'estrada', 'fazenda', 'ladeira', 'largo', 'rodovia', 'rua', 'travessa')) ;
+ALTER TABLE ENDERECO ADD CONSTRAINT ENDERECO_PK PRIMARY KEY ( cd_end ) ;
+
+CREATE TABLE ESTADO
+  (
+    sg_estado CHAR (2) NOT NULL ,
+    nm_estado VARCHAR2 (30 CHAR) NOT NULL ,
+    cd_pais   INTEGER NOT NULL
+  ) ;
+ALTER TABLE ESTADO ADD CONSTRAINT ESTADO_PK PRIMARY KEY ( sg_estado ) ;
+
+CREATE TABLE ESTILO_CERVEJA
+  (
+    cd_estilo_cerveja INTEGER NOT NULL ,
+    nm_estilo_cerveja VARCHAR2 (30 CHAR) NOT NULL ,
+    fm_estilo_cerveja VARCHAR2 (5 CHAR) NOT NULL
+  ) ;
+ALTER TABLE ESTILO_CERVEJA ADD CHECK ( fm_estilo_cerveja IN ('ale', 'lager')) ;
+ALTER TABLE ESTILO_CERVEJA ADD CONSTRAINT ESTILO_CERVEJA_PK PRIMARY KEY ( cd_estilo_cerveja ) ;
+
+CREATE TABLE FUNCIONARIO
+  (
+    cd_funcionario          INTEGER NOT NULL ,
+    dt_admissão_funcionario DATE NOT NULL ,
+    dt_demissao_funcionario DATE ,
+    vl_salario_funcionario  NUMBER (9,2) NOT NULL ,
+    cd_pessoa               INTEGER NOT NULL ,
+    cg_crg                  INTEGER NOT NULL ,
+    cd_funcionario_2        INTEGER NOT NULL
+  ) ;
+CREATE UNIQUE INDEX FUNCIONARIO__IDX ON FUNCIONARIO
+  (
+    cd_pessoa ASC
+  )
+  ;
+  ALTER TABLE FUNCIONARIO ADD CONSTRAINT FUNCIONARIO_PK PRIMARY KEY ( cd_funcionario ) ;
+
+CREATE TABLE ITEM_PROMO
+  (
+    cd_item_promo  INTEGER NOT NULL ,
+    PROMO_cd_promo INTEGER NOT NULL
+  ) ;
+CREATE UNIQUE INDEX ITEM_PROMO__IDX ON ITEM_PROMO
+  (
+    PROMO_cd_promo ASC
+  )
+  ;
+  ALTER TABLE ITEM_PROMO ADD CONSTRAINT ITEM_PROMO_PK PRIMARY KEY ( cd_item_promo ) ;
+
+CREATE TABLE ITEM_VENDA
+  (
+    cd_item_venda INTEGER NOT NULL ,
+    cd_venda      INTEGER NOT NULL ,
+    qt_item_venda NUMBER NOT NULL ,
+    vl_uni_item   NUMBER (2,6) NOT NULL
+  ) ;
+ALTER TABLE ITEM_VENDA ADD CONSTRAINT ITEM_VENDA_PK PRIMARY KEY ( cd_item_venda, cd_venda ) ;
+
+CREATE TABLE PAGAMENTO
+  (
+    cd_pagamento INTEGER NOT NULL ,
+    tp_pagamento VARCHAR2 (8 CHAR) NOT NULL ,
+    dt_pagamento DATE NOT NULL ,
+    vl_pagamento NUMBER NOT NULL ,
+    cd_venda     INTEGER NOT NULL
+  ) ;
+ALTER TABLE PAGAMENTO ADD CHECK ( tp_pagamento IN ('credito', 'debito', 'dinheiro')) ;
+ALTER TABLE PAGAMENTO ADD CONSTRAINT PAGAMENTO_PK PRIMARY KEY ( cd_pagamento ) ;
+
+CREATE TABLE PAIS
+  (
+    cd_pais INTEGER NOT NULL ,
+    nm_pais VARCHAR2 (30 CHAR) NOT NULL
+  ) ;
+ALTER TABLE PAIS ADD CONSTRAINT PAIS_PK PRIMARY KEY ( cd_pais ) ;
+
+CREATE TABLE PESSOA
+  (
+    cd_pessoa       INTEGER NOT NULL ,
+    nm_pessoa       VARCHAR2 (60 CHAR) NOT NULL ,
+    nu_cpf_pessoa   VARCHAR2 (14 CHAR) NOT NULL ,
+    nu_rg_pessoa    VARCHAR2 (15 CHAR) NOT NULL ,
+    ds_sexo_pessoa  CHAR (1 CHAR) NOT NULL ,
+    ds_email_pessoa VARCHAR2 (50 CHAR) ,
+    dt_nasc_pessoa  DATE NOT NULL
+  ) ;
+ALTER TABLE PESSOA ADD CHECK ( ds_sexo_pessoa IN ('f', 'm')) ;
+ALTER TABLE PESSOA ADD CONSTRAINT PESSOA_PK PRIMARY KEY ( cd_pessoa ) ;
+
+CREATE TABLE PRODUTO
+  (
+    cd_produto             INTEGER NOT NULL ,
+    nm_produto             VARCHAR2 (100) NOT NULL ,
+    vl_produto             NUMBER (2,6) NOT NULL ,
+    qt_disp_produto        NUMBER NOT NULL ,
+    ds_produto             VARCHAR2 (250) ,
+    CATEGORIA_cd_categoria NUMBER (10) NOT NULL
+  ) ;
+ALTER TABLE PRODUTO ADD CONSTRAINT PRODUTO_PK PRIMARY KEY ( cd_produto ) ;
+
+CREATE TABLE PROMO
+  (
+    cd_promo       INTEGER NOT NULL ,
+    nm_promo       VARCHAR2 (30) NOT NULL ,
+    qt_cupom_promo INTEGER NOT NULL ,
+    ds_promo CLOB NOT NULL ,
+    dt_ini_promo        DATE NOT NULL ,
+    ds_fim_promo        DATE ,
+    cd_tipo_promocao    INTEGER NOT NULL ,
+    ds_divulgacao_promo VARCHAR2 (300) NOT NULL ,
+    qt_item_promo       NUMBER NOT NULL
+  ) ;
+ALTER TABLE PROMO ADD CONSTRAINT PROMO_PK PRIMARY KEY ( cd_promo ) ;
+
+CREATE TABLE SUB_CATEGORIA
+  (
+    cd_categoria_pai   NUMBER (10) NOT NULL ,
+    cd_categoria_filha NUMBER (10) NOT NULL ,
+    dt_ini             DATE NOT NULL ,
+    dt_fim             DATE
+  ) ;
+ALTER TABLE SUB_CATEGORIA ADD CONSTRAINT SUB_CATEGORIA_PK PRIMARY KEY ( cd_categoria_filha, cd_categoria_pai, dt_ini ) ;
+
+CREATE TABLE TELEFONE
+  (
+    cd_telefone    INTEGER NOT NULL ,
+    ddd_telefone   NUMBER NOT NULL ,
+    nu_telefone    NUMBER NOT NULL ,
+    tp_telefone    VARCHAR2 (12 CHAR) NOT NULL ,
+    ramal_telefone NUMBER ,
+    cd_unidade     INTEGER ,
+    cd_pessoa      INTEGER
+  ) ;
+ALTER TABLE TELEFONE ADD CHECK ( tp_telefone IN ('celular', 'comercial', 'residencial')) ;
+ALTER TABLE TELEFONE ADD CONSTRAINT TELEFONE_PK PRIMARY KEY ( cd_telefone ) ;
+
+CREATE TABLE TIPO_PROMOCAO
+  (
+    cd_tipo_promocao INTEGER NOT NULL ,
+    nm_tipo_promocao VARCHAR2 (100) NOT NULL
+  ) ;
+ALTER TABLE TIPO_PROMOCAO ADD CONSTRAINT TIPO_PROMOCAO_PK PRIMARY KEY ( cd_tipo_promocao ) ;
+
+CREATE TABLE UNIDADE
+  (
+    cd_unidade INTEGER NOT NULL ,
+    nm_unidade VARCHAR2 (30 CHAR) NOT NULL ,
+    tp_unidade VARCHAR2 (10 CHAR) NOT NULL ,
+    cd_end     INTEGER NOT NULL
+  ) ;
+ALTER TABLE UNIDADE ADD CHECK ( tp_unidade IN ('franquiada', 'propria')) ;
+CREATE UNIQUE INDEX UNIDADE__IDX ON UNIDADE ( cd_end ASC ) ;
+  ALTER TABLE UNIDADE ADD CONSTRAINT UNIDADE_PK PRIMARY KEY ( cd_unidade ) ;
+
+CREATE TABLE VENDA
+  (
+    cd_venda       INTEGER NOT NULL ,
+    tp_venda       VARCHAR2 (7 CHAR) NOT NULL ,
+    dt_venda       DATE NOT NULL ,
+    cd_funcionario INTEGER NOT NULL ,
+    dt_clima       DATE ,
+    cd_unidade     INTEGER NOT NULL ,
+    cd_cliente     INTEGER ,
+    vl_ttl_venda   NUMBER (2,7) NOT NULL ,
+    nu_cupom       INTEGER
+  ) ;
+ALTER TABLE VENDA ADD CHECK ( tp_venda IN ('avulso', 'comanda')) ;
+CREATE UNIQUE INDEX VENDA__IDX ON VENDA ( cd_funcionario ASC ) ;
+  ALTER TABLE VENDA ADD CONSTRAINT VENDA_PK PRIMARY KEY ( cd_venda ) ;
+
+ALTER TABLE BAIRRO ADD CONSTRAINT BAIRRO_CIDADE_FK FOREIGN KEY ( cd_cidade ) REFERENCES CIDADE ( cd_cidade ) ;
+
+ALTER TABLE CERVEJA ADD CONSTRAINT CERVEJA_ESTILO_CERVEJA_FK FOREIGN KEY ( cd_estilo_cerveja ) REFERENCES ESTILO_CERVEJA ( cd_estilo_cerveja ) ;
+
+ALTER TABLE CERVEJA ADD CONSTRAINT CERVEJA_PAIS_FK FOREIGN KEY ( cd_pais ) REFERENCES PAIS ( cd_pais ) ;
+
+ALTER TABLE CERVEJA ADD CONSTRAINT CERVEJA_PRODUTO_FK FOREIGN KEY ( cd_produto ) REFERENCES PRODUTO ( cd_produto ) ;
+
+ALTER TABLE CIDADE ADD CONSTRAINT CIDADE_ESTADO_FK FOREIGN KEY ( sg_estado ) REFERENCES ESTADO ( sg_estado ) ;
+
+ALTER TABLE CLIENTE ADD CONSTRAINT CLIENTE_PESSOA_FK FOREIGN KEY ( cd_pessoa ) REFERENCES PESSOA ( cd_pessoa ) ;
+
+ALTER TABLE CUPOM ADD CONSTRAINT CUPOM_PROMO_FK FOREIGN KEY ( cd_promo ) REFERENCES PROMO ( cd_promo ) ;
+
+ALTER TABLE ENDERECO ADD CONSTRAINT ENDERECO_BAIRRO_FK FOREIGN KEY ( cd_bairro ) REFERENCES BAIRRO ( cd_bairro ) ;
+
+ALTER TABLE ENDERECO ADD CONSTRAINT ENDERECO_PESSOA_FK FOREIGN KEY ( cd_pessoa ) REFERENCES PESSOA ( cd_pessoa ) ;
+
+ALTER TABLE ESTADO ADD CONSTRAINT ESTADO_PAIS_FK FOREIGN KEY ( cd_pais ) REFERENCES PAIS ( cd_pais ) ;
+
+ALTER TABLE COMBO_PRD_IVND ADD CONSTRAINT FK_ASS_35 FOREIGN KEY ( cd_produto ) REFERENCES PRODUTO ( cd_produto ) ;
+
+ALTER TABLE COMBO_PRD_IVND ADD CONSTRAINT FK_ASS_36 FOREIGN KEY ( cd_item_venda, cd_venda ) REFERENCES ITEM_VENDA ( cd_item_venda, cd_venda ) ;
+
+ALTER TABLE COMBO_PROD_ITM_VND ADD CONSTRAINT FK_ASS_54 FOREIGN KEY ( cd_produto ) REFERENCES PRODUTO ( cd_produto ) ;
+
+ALTER TABLE COMBO_PROD_ITM_VND ADD CONSTRAINT FK_ASS_55 FOREIGN KEY ( cd_item_promo ) REFERENCES ITEM_PROMO ( cd_item_promo ) ;
+
+ALTER TABLE COMBO_VND_PRM ADD CONSTRAINT FK_ASS_65 FOREIGN KEY ( cd_promo ) REFERENCES PROMO ( cd_promo ) ;
+
+ALTER TABLE COMBO_VND_PRM ADD CONSTRAINT FK_ASS_66 FOREIGN KEY ( cd_venda ) REFERENCES VENDA ( cd_venda ) ;
+
+ALTER TABLE FUNCIONARIO ADD CONSTRAINT FUNCIONARIO_CARGO_FK FOREIGN KEY ( cg_crg ) REFERENCES CARGO ( cg_crg ) ;
+
+ALTER TABLE FUNCIONARIO ADD CONSTRAINT FUNCIONARIO_FUNCIONARIO_FK FOREIGN KEY ( cd_funcionario_2 ) REFERENCES FUNCIONARIO ( cd_funcionario ) ;
+
+ALTER TABLE FUNCIONARIO ADD CONSTRAINT FUNCIONARIO_PESSOA_FK FOREIGN KEY ( cd_pessoa ) REFERENCES PESSOA ( cd_pessoa ) ;
+
+ALTER TABLE ITEM_PROMO ADD CONSTRAINT ITEM_PROMO_PROMO_FK FOREIGN KEY ( PROMO_cd_promo ) REFERENCES PROMO ( cd_promo ) ;
+
+ALTER TABLE ITEM_VENDA ADD CONSTRAINT ITEM_VENDA_VENDA_FK FOREIGN KEY ( cd_venda ) REFERENCES VENDA ( cd_venda ) ;
+
+ALTER TABLE PAGAMENTO ADD CONSTRAINT PAGAMENTO_VENDA_FK FOREIGN KEY ( cd_venda ) REFERENCES VENDA ( cd_venda ) ;
+
+ALTER TABLE PRODUTO ADD CONSTRAINT PRODUTO_CATEGORIA_FK FOREIGN KEY ( CATEGORIA_cd_categoria ) REFERENCES CATEGORIA ( cd_categoria ) ;
+
+ALTER TABLE PROMO ADD CONSTRAINT PROMO_TIPO_PROMOCAO_FK FOREIGN KEY ( cd_tipo_promocao ) REFERENCES TIPO_PROMOCAO ( cd_tipo_promocao ) ;
+
+ALTER TABLE SUB_CATEGORIA ADD CONSTRAINT SUB_CATEGORIA_CATEGORIA_FK FOREIGN KEY ( cd_categoria_pai ) REFERENCES CATEGORIA ( cd_categoria ) ;
+
+ALTER TABLE SUB_CATEGORIA ADD CONSTRAINT SUB_CATEGORIA_CATEGORIA_FKv1 FOREIGN KEY ( cd_categoria_filha ) REFERENCES CATEGORIA ( cd_categoria ) ;
+
+ALTER TABLE TELEFONE ADD CONSTRAINT TELEFONE_PESSOA_FK FOREIGN KEY ( cd_pessoa ) REFERENCES PESSOA ( cd_pessoa ) ;
+
+ALTER TABLE TELEFONE ADD CONSTRAINT TELEFONE_UNIDADE_FK FOREIGN KEY ( cd_unidade ) REFERENCES UNIDADE ( cd_unidade ) ;
+
+ALTER TABLE UNIDADE ADD CONSTRAINT UNIDADE_ENDERECO_FK FOREIGN KEY ( cd_end ) REFERENCES ENDERECO ( cd_end ) ;
+
+ALTER TABLE VENDA ADD CONSTRAINT VENDA_CLIENTE_FK FOREIGN KEY ( cd_cliente ) REFERENCES CLIENTE ( cd_cliente ) ;
+
+ALTER TABLE VENDA ADD CONSTRAINT VENDA_CLIMA_FK FOREIGN KEY ( dt_clima ) REFERENCES CLIMA ( dt_clima ) ;
+
+ALTER TABLE VENDA ADD CONSTRAINT VENDA_CUPOM_FK FOREIGN KEY ( nu_cupom ) REFERENCES CUPOM ( nu_cupom ) ;
+
+ALTER TABLE VENDA ADD CONSTRAINT VENDA_FUNCIONARIO_FK FOREIGN KEY ( cd_funcionario ) REFERENCES FUNCIONARIO ( cd_funcionario ) ;
+
+ALTER TABLE VENDA ADD CONSTRAINT VENDA_UNIDADE_FK FOREIGN KEY ( cd_unidade ) REFERENCES UNIDADE ( cd_unidade ) ;
+
+
+-- Relatório do Resumo do Oracle SQL Developer Data Modeler: 
+-- 
+-- CREATE TABLE                            27
+-- CREATE INDEX                             5
+-- ALTER TABLE                             72
+-- CREATE VIEW                              0
+-- CREATE PACKAGE                           0
+-- CREATE PACKAGE BODY                      0
+-- CREATE PROCEDURE                         0
+-- CREATE FUNCTION                          0
+-- CREATE TRIGGER                           0
+-- ALTER TRIGGER                            0
+-- CREATE COLLECTION TYPE                   0
+-- CREATE STRUCTURED TYPE                   0
+-- CREATE STRUCTURED TYPE BODY              0
+-- CREATE CLUSTER                           0
+-- CREATE CONTEXT                           0
+-- CREATE DATABASE                          0
+-- CREATE DIMENSION                         0
+-- CREATE DIRECTORY                         0
+-- CREATE DISK GROUP                        0
+-- CREATE ROLE                              0
+-- CREATE ROLLBACK SEGMENT                  0
+-- CREATE SEQUENCE                          0
+-- CREATE MATERIALIZED VIEW                 0
+-- CREATE SYNONYM                           0
+-- CREATE TABLESPACE                        0
+-- CREATE USER                              0
+-- 
+-- DROP TABLESPACE                          0
+-- DROP DATABASE                            0
+-- 
+-- REDACTION POLICY                         0
+-- 
+-- WARNINGS                                 0
